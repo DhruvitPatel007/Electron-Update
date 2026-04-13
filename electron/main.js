@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain, session, dialog } = require("electron");
 const path = require("node:path");
+const fs = require("node:fs");
 const loudness = require("loudness");
 const { autoUpdater } = require("electron-updater");
 
@@ -106,11 +107,16 @@ function createWindow() {
   });
 
   if (process.env.NODE_ENV !== "development") {
-    win.loadFile(path.join(__dirname, "..", "build", "index.html"));
-    console.log(
-      "Forcing static build load from:",
-      path.join(__dirname, "..", "build", "index.html"),
-    );
+    const buildIndexPath = path.join(__dirname, "..", "build", "index.html");
+    const rootIndexPath = path.join(__dirname, "..", "index.html");
+
+    // Load React build output when present, otherwise use the local HTML entry.
+    const rendererPath = fs.existsSync(buildIndexPath)
+      ? buildIndexPath
+      : rootIndexPath;
+
+    win.loadFile(rendererPath);
+    console.log("Loading renderer from:", rendererPath);
   } else {
     win.loadURL("http://localhost:3000");
     win.webContents.openDevTools();

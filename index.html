@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Electron Update Demo</title>
+    <style>
+      :root {
+        --bg-1: #0f172a;
+        --bg-2: #1e293b;
+        --card: rgba(15, 23, 42, 0.68);
+        --line: rgba(148, 163, 184, 0.25);
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --accent: #22d3ee;
+        --accent-2: #f59e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(
+            circle at 20% 15%,
+            rgba(34, 211, 238, 0.12),
+            transparent 38%
+          ),
+          radial-gradient(
+            circle at 85% 80%,
+            rgba(245, 158, 11, 0.14),
+            transparent 40%
+          ),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2));
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .panel {
+        width: min(760px, 100%);
+        border: 1px solid var(--line);
+        background: var(--card);
+        backdrop-filter: blur(8px);
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 22px 50px rgba(2, 6, 23, 0.45);
+      }
+
+      h1 {
+        margin: 0 0 10px;
+        font-size: clamp(1.4rem, 2.8vw, 2rem);
+        line-height: 1.2;
+      }
+
+      .subtitle {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        color: #cbd5e1;
+        background: rgba(30, 41, 59, 0.55);
+      }
+
+      .row {
+        margin-top: 20px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .version {
+        font-size: 0.95rem;
+        color: #a5f3fc;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-weight: 600;
+        color: #0f172a;
+        background: linear-gradient(90deg, var(--accent), #67e8f9);
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        filter: brightness(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <main class="panel">
+      <h1>Auto-Update Test Surface</h1>
+      <p class="subtitle">
+        This UI is intentionally new so you can verify update delivery from
+        v1.0.0 to v1.0.1.
+      </p>
+
+      <div class="chips">
+        <span class="chip">Electron</span>
+        <span class="chip">NSIS Installer</span>
+        <span class="chip">GitHub Releases</span>
+      </div>
+
+      <div class="row">
+        <div class="version" id="appVersion">Version: loading...</div>
+        <button class="btn" id="refreshBtn" type="button">
+          Refresh Version
+        </button>
+      </div>
+    </main>
+
+    <script>
+      const versionNode = document.getElementById("appVersion");
+      const refreshBtn = document.getElementById("refreshBtn");
+
+      function paintVersion() {
+        const version = window.api?.appVersion || "unknown";
+        versionNode.textContent = `Version: ${version}`;
+      }
+
+      refreshBtn.addEventListener("click", paintVersion);
+      paintVersion();
+    </script>
+  </body>
+</html>
