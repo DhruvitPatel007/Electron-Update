@@ -5,8 +5,8 @@
   "description": "Testing Squirrel Auto-Updater",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder",
-    "publish": "electron-builder -p always"
+    "build": "electron-builder --publish never",
+    "release": "electron-builder -p always"
   },
   "keywords": [],
   "author": "Dhruvit",
@@ -29,13 +29,16 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
-      "perMachine": false
+      "perMachine": false,
+      "compression": "maximum"
     },
     "publish": [
       {
         "provider": "github",
         "owner": "DhruvitPatel007",
-        "repo": "Electron-Update"
+        "repo": "Electron-Update",
+        "private": false,
+        "timeout": 600000
       }
     ]
   }
