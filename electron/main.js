@@ -176,7 +176,24 @@ autoUpdater.on("error", (err) => {
   );
 });
 
-app.whenReady().then(createWindow);
+const log = require("electron-log");
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = "info";
+
+app.whenReady().then(() => {
+  createWindow();
+
+  if (app.isPackaged) {
+    autoUpdater.setFeedURL({
+      provider: "github",
+      owner: "DhruvitPatel007",
+      repo: "Electron-Update",
+    });
+
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
