@@ -1,0 +1,42 @@
+{
+  "name": "electron-squirrel-test",
+  "version": "1.0.0",
+  "main": "electron/main.js",
+  "description": "Testing Squirrel Auto-Updater",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "publish": "electron-builder -p always"
+  },
+  "keywords": [],
+  "author": "Dhruvit",
+  "license": "ISC",
+  "dependencies": {
+    "electron-updater": "^6.8.3",
+    "loudness": "^0.4.2"
+  },
+  "devDependencies": {
+    "electron": "^41.2.0",
+    "electron-builder": "^26.8.1"
+  },
+  "build": {
+    "appId": "com.dhruvit.squirreltest",
+    "win": {
+      "target": [
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "DhruvitPatel007",
+        "repo": "electron-squirrel-test"
+      }
+    ]
+  }
+}
