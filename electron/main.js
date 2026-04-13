@@ -4,6 +4,14 @@ const fs = require("node:fs");
 const loudness = require("loudness");
 const { autoUpdater } = require("electron-updater");
 
+let hasCheckedForUpdates = false;
+
+function checkForUpdatesOnce() {
+  if (hasCheckedForUpdates || !app.isPackaged) return;
+  hasCheckedForUpdates = true;
+  autoUpdater.checkForUpdatesAndNotify();
+}
+
 let bluetoothPinCallback = null;
 let selectBluetoothCallback = null;
 let cachedDeviceToSelect = null;
@@ -124,9 +132,7 @@ function createWindow() {
   }
 
   win.once("ready-to-show", () => {
-    if (app.isPackaged) {
-      autoUpdater.checkForUpdatesAndNotify();
-    }
+    checkForUpdatesOnce();
   });
 }
 
@@ -180,6 +186,7 @@ const log = require("electron-log");
 
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = "info";
+autoUpdater.disableWebInstaller = true;
 
 app.whenReady().then(() => {
   createWindow();
@@ -191,7 +198,7 @@ app.whenReady().then(() => {
       repo: "Electron-Update",
     });
 
-    autoUpdater.checkForUpdatesAndNotify();
+    checkForUpdatesOnce();
   }
 });
 
